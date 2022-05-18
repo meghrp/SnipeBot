@@ -14,14 +14,37 @@ async def on_ready():
 
 @bot.event
 async def on_message_delete(message):
-    bot.sniped_messages[message.guild.id] = (message.content, message.author, message.channel.name, message.created_at)
+    if message.attachments:
+        bot.sniped_messages[message.guild.id] = (message.content, message.author, message.channel.name, message.created_at, message.attachments[0].proxy_url)
+    else:
+        bot.sniped_messages[message.guild.id] = (message.content, message.author, message.channel.name, message.created_at)
 
 @bot.command()
 async def snipe(ctx):
-    content, author, channel, created_at = bot.sniped_messages[ctx.guild.id]
-    embed = discord.Embed(description=content, color=discord.Color.teal(), timestamp=created_at)
-    embed.set_author(name=f"{author.name}", icon_url=author.avatar_url)
-    embed.set_footer(text=f"#{channel}")
-    await ctx.send(embed=embed)
+    try:
+        is_img = None
+        try:
+            content, author, channel, created_at, img_url = bot.sniped_messages[ctx.guild.id]
+            is_img = True
+        except:
+            content, author, channel, created_at = bot.sniped_messages[ctx.guild.id]
+        if author.id != bot.user.id:
+            embed = discord.Embed(description=content, color=discord.Color.teal(), timestamp=created_at)
+            if is_img:
+                embed.set_image(url=img_url)
+            embed.set_author(name=f"{author.name}", icon_url=author.avatar_url)
+            embed.set_footer(text=f"#{channel}")
+            await ctx.send(embed=embed)
+    except KeyError:
+        await ctx.send("Nothing to snipe")
+
+@bot.command()
+@commands.is_owner()
+async def servers(ctx):
+    try:
+        for i in bot.guilds:
+            await ctx.send(i.name)
+    except:
+        pass
 
 bot.run(TOKEN)
