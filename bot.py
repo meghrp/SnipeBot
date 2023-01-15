@@ -110,6 +110,9 @@ async def leave(ctx, guild_id=None):
     try:
         await guild.leave()
         print(f"Left {guild.name}")
+        owner = await bot.application_info()
+        owner = owner.owner
+        await owner.send(f"Left {guild.name} ({guild.id})")
     except:
         await ctx.send("Invalid guild id")
 
