@@ -146,7 +146,7 @@ async def info(ctx):
     embed.add_field(name="Servers", value=f"{len(bot.guilds)}")
     embed.add_field(name="Users", value=f"{len(bot.users)}")
     embed.add_field(name="Ping", value=f"{round(bot.latency * 1000)}ms")
-    embed.set_thumbnail(url=bot.user.avatar)
+    embed.set_thumbnail(url="https://cdn.discordapp.com/avatars/975891582354079773/f527b32f4584a41c1b7320073691d8b3.png?size=1024")
     await send_embed(ctx, embed)
 
 
@@ -160,7 +160,7 @@ async def help(ctx):
     embed.add_field(name="github", value="Sends the bot's github link")
     embed.add_field(name="prefix", value="Shows the bot's prefix")
     embed.add_field(name="help", value="Shows this message")
-    embed.set_thumbnail(url=bot.user.avatar)
+    embed.set_thumbnail(url="https://cdn.discordapp.com/avatars/975891582354079773/f527b32f4584a41c1b7320073691d8b3.png?size=1024")
     await send_embed(ctx, embed)
 
 
